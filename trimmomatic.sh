@@ -16,5 +16,5 @@ do
 startdir=/ifb/data/mydatalocal/sra_data/$trim
 targetdir=/ifb/data/mydatalocal/trimmomatic_data/$trim
 java -jar  /softwares/Trimmomatic-0.39/trimmomatic-0.39.jar SE $startdir $targetdir \
-ILLUMINACLIP:TruSeq3-SE:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
+ILLUMINACLIP:/softwares/Trimmomatic-0.39/adapters/TruSeq3-SE.fa:2:30:10 LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36
 done
