@@ -13,7 +13,7 @@ ALIGN=`ls /home/rstudio/data/mydatalocal/trimmomatic_data`
 # For each element in our liqt run the Java package Trimmomatic
 for align in $ALIGN
 do
-startdir=/ifb/data/mydatalocal/sra_data/$align
+startdir=/ifb/data/mydatalocal/trimmomatic_data/$align
 targetdir=/ifb/data/mydatalocal/alignement_data/$align
 salmon quant -i /ifb/data/mydatalocal/Ref_seq/mouse_index_unzipped -l SR -r $startdir --validateMappings -o $targetdir --gcBias
 done
