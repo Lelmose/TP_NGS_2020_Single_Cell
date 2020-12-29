@@ -22,12 +22,20 @@ In order to purify the dataset from the detected bias, **trimmomatic** was run w
 * Remove poor quality reads
 * Remove too short reads
 
+A second **fastqc** analysis on the trimmed data confirmed the efficiency of the purification.
+
 ## First alignment using Salmon
 
+The first idea for identifying cellular types based on RNAseq data was to align the reads on a reference mouse transcriptome in order to count the number of reads per genes and to be able to go further in comparisons. This alignement on transcriptome was performed with **salmon** in a two steps framework.
+First a salmon index was obtained with the script
+Then, 
 ## Analysis of the data with Seurat
+The R package Seurat permits to conduct statistical analysis on single cell data. 
 
 ### Estimating variance of the Dataset
+
 ### Dimensional reduction
+
 ### Clustering
 ### Annotation of the clusters
 
