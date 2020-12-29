@@ -10,7 +10,7 @@ The accession numbers of the cells that fullfil all the criteria were sum up in 
 
 ## Evaluation of the quality
 
-In order to evaluate the quality of sequencing the **fastqc** tool was run on a subset of our dataset with the script `fastqc.sh`. Then a **multiqc** overview of the data permitted to identify
+In order to evaluate the quality of sequencing the **fastqc** tool was run on a subset of our dataset with the script `fastqc.sh`. Then a **multiqc** overview of the data permitted to identify that the quality of the fragment was not always statisfying on some 
 
 ## Purification
 
