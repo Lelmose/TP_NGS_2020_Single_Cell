@@ -6,17 +6,24 @@ Human dental tissue can't regenarate and this statement has forced human to use 
 
 ## Getting the data
 The data were collected on NCBI (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE146123). The dataset used in this work was obtained by selecting an homogeneous subset of the original study i.e. : Mus musculus, healthy, incisor, smart seq2. The corresponding subset included 2555 cells.
+
 The accession numbers of the cells that fullfil all the criteria were sum up in an SSR accession number list and the script `fastqdump.sh` permitted to get the files with **fastq-dump**.
 
 ## Evaluation of the quality
 
-In order to evaluate the quality of sequencing the **fastqc** tool was run on a subset of our dataset with the script `fastqc.sh`. Then a **multiqc** overview of the data permitted to identify that the quality of the fragment was not always statisfying on some 
+In order to evaluate the quality of sequencing the **fastqc** tool was run on a subset of our dataset with the script `fastqc.sh`. Then a **multiqc** overview of the data permitted to identify that the quality of the fragment was not always statisfying on the ends of the reads. No significant contamination nor sequencing error were reported.
 
 ## Purification
 
+In order to purify the dataset from the detected bias, **trimmomatic** was run with `trimmomatic.sh`. The targeted bias were:
+*Remove the adaptators
+*Remove poor quality bases
+*Remove poor quality reads
+*Remove too short reads
+
 ## First alignment using Salmon
 
-## Analisis of the data with Seurat
+## Analysis of the data with Seurat
 
 ### Estimating variance of the Dataset
 ### Dimensional reduction
