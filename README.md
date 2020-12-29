@@ -15,7 +15,9 @@ In order to evaluate the quality of sequencing the **fastqc** tool was run on a 
 
 ## Purification
 
-In order to purify the dataset from the detected bias, **trimmomatic** was run with `trimmomatic.sh`. The targeted bias were:
+In order to purify the dataset from the detected bias, **trimmomatic** was run with `trimmomatic.sh`. 
+
+The targeted bias were:
 
 * Remove the adaptators
 * Remove poor quality bases
@@ -27,12 +29,18 @@ A second **fastqc** analysis on the trimmed data confirmed the efficiency of the
 ## First alignment using Salmon
 
 The first idea for identifying cellular types based on RNAseq data was to align the reads on a reference mouse transcriptome in order to count the number of reads per genes and to be able to go further in comparisons. This alignement on transcriptome was performed with **salmon** in a two steps framework.
-First a salmon index was obtained with the script
-Then, 
+First a salmon index was obtained with the script `salmon_index.sh` using as reference `Mus_musculus.GRCm38.cdna.all.fa` and `mouse_index_unzipped`.
+
+Then, the Java package **salmon** xas run on all the cells with `alignment.sh`
 ## Analysis of the data with Seurat
 The R package Seurat permits to conduct statistical analysis on single cell data. 
+### Purification on gene counts
 
-### Estimating variance of the Dataset
+With the precise number of counts per genes a more precise purification can be run on the dataset. The three following values were used as reference of sequencing quality and a threshold was set on those values to ensure the consistence of the data.
+
+* Total number of reads: remove the lowest and highest 5%
+* Number of different genes: remove the lowest 5%
+### Estimating variance of the Dataset and rescaling the data
 
 ### Dimensional reduction
 
