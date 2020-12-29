@@ -16,10 +16,11 @@ In order to evaluate the quality of sequencing the **fastqc** tool was run on a 
 ## Purification
 
 In order to purify the dataset from the detected bias, **trimmomatic** was run with `trimmomatic.sh`. The targeted bias were:
-*Remove the adaptators
-*Remove poor quality bases
-*Remove poor quality reads
-*Remove too short reads
+
+* Remove the adaptators
+* Remove poor quality bases
+* Remove poor quality reads
+* Remove too short reads
 
 ## First alignment using Salmon
 
