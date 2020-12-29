@@ -1,8 +1,15 @@
 # Re-analysis of data from 'Dental cell type atlas reveals stem and differentiated cell types in mouse and human teeth'
 
+## Introduction
+
+Human dental tissue can't regenarate and this statement has forced human to use artificial implants. However, those implants are not always tolerated by human body and there are numbers of associated pathologies. One different approach to this issue is the study of rodent dental epithelium. Due to they way of living, rodents' incisive don't stop growing during there life. This implicates that a stem cell niche remains active during their whole life. Ie toFollowing the framework of the paper from Krikanez et al. we reanalyzed a dataset of single cell RNA seq.
+
 ## Getting the data
+The data were collected on . Then the script was run to download the compressed files.
 
 ## Evaluation of the quality
+
+In order to evaluate the quality of the dataset
 
 ## Purification
 
