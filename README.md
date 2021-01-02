@@ -40,10 +40,16 @@ With the precise number of counts per genes a more precise purification can be r
 
 * Total number of reads: remove the lowest and highest 5%
 * Number of different genes: remove the lowest 5%
+* Percent of motochondrial RNA: only cells with less than 15% of mitochondrial RNA were kept.
+
+1962 cells corresponded to these criteria and the Fig testifies that extreme values have been removed.
+
 ### Estimating variance of the Dataset and rescaling the data
 
-### Dimensional reduction
+As the following analysis aim to detect different cell type it is important to select genes that exhibit variability in their expression. Based on the Fig, the 5% more expressed genes were selected. This step is important because it the first dimensional reduction of our data and it will prevent some bias for the next dimensional reductions. A lot of poorly variable genes will have a deleterious impact on the PCA because it will increase sparsity and introduice correlated variables that are not consistent with the goal of this work.
 
+### Dimensional reduction
+After the previous purification steps the dataset was still high dimension (5548 genes on 1962 cells) and then non usable for clustering algorithms. For this reason a PCA method was run on the data using Seurat. The next 
 ### Clustering
 ### Annotation of the clusters
 
