@@ -28,23 +28,32 @@ A second **fastqc** analysis on the trimmed data confirmed the efficiency of the
 
 ![Mean per base quality](Pictures/fastqc_per_base_sequence_quality_plot.png)
 
+The poor quality extremities have been removed.
+
 ## First alignment using Salmon
 
 The first idea for identifying cellular types based on RNAseq data was to align the reads on a reference mouse transcriptome in order to count the number of reads per genes and to be able to go further in comparisons. This alignement on transcriptome was performed with **salmon** in a two steps framework.
 First a salmon index was obtained with the script `salmon_index.sh` using as reference `Mus_musculus.GRCm38.cdna.all.fa` and `mouse_index_unzipped`.
 
 Then, the Java package **salmon** xas run on all the cells with `alignment.sh`
+
 ## Analysis of the data with Seurat
+
 The R package Seurat permits to conduct statistical analysis on single cell data. 
+
 ### Purification on gene counts
 
 With the precise number of counts per genes a more precise purification can be run on the dataset. The three following values were used as reference of sequencing quality and a threshold was set on those values to ensure the consistence of the data.
+
+![Data before purification](Pictures/features before purif.png)
 
 * Total number of reads: remove the lowest and highest 5%
 * Number of different genes: remove the lowest 5%
 * Percent of motochondrial RNA: only cells with less than 15% of mitochondrial RNA were kept.
 
 1962 cells corresponded to these criteria and the Fig testifies that extreme values have been removed.
+
+![Data after purification](Pictures/Features after purif.png)
 
 ### Estimating variance of the Dataset and rescaling the data
 
