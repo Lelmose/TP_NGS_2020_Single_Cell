@@ -24,7 +24,9 @@ The targeted bias were:
 * Remove poor quality reads
 * Remove too short reads
 
-A second **fastqc** analysis on the trimmed data confirmed the efficiency of the purification.
+A second **fastqc** analysis on the trimmed data confirmed the efficiency of the purification as illustrated in the following figures.
+
+![Mean per base quality](./Pictures/fastqc_per_base_sequence_quality_plot.png)
 
 ## First alignment using Salmon
 
