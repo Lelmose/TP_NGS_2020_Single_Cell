@@ -45,7 +45,7 @@ The R package Seurat permits to conduct statistical analysis on single cell data
 
 With the precise number of counts per genes a more precise purification can be run on the dataset. The three following values were used as reference of sequencing quality and a threshold was set on those values to ensure the consistence of the data.
 
-![Data before purification](Pictures/before_purif.png) 
+![Data before purification](Pictures/features_before_purif.png) 
 
 * Total number of reads: remove the lowest and highest 5%
 * Number of different genes: remove the lowest 5%
