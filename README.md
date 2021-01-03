@@ -53,7 +53,7 @@ With the precise number of counts per genes a more precise purification can be r
 
 1962 cells corresponded to these criteria and the Fig testifies that extreme values have been removed.
 
-![Data after purification](Pictures/Features after purif.png)
+![Data after purification](Pictures/Features_after_purif.png)
 
 ### Estimating variance of the Dataset and rescaling the data
 
