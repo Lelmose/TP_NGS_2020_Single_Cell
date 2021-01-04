@@ -5,6 +5,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 BiocManager::install("pcaMethods")
 
+
 library(dplyr)
 library(Seurat)
 library(SeuratWrappers)
@@ -12,35 +13,77 @@ library(velocyto.R)
 library(patchwork)
 library('umap-learn')
 
-# Read the loom file, the resulting object contains 4 tabs, spliced, unspliced, ambiguous and spanning
+# Read the loom file, the resulting object contains 4 tabs: spliced, unspliced, ambiguous and spanning
 tooth <- ReadVelocity('/ifb/data/mydatalocal/loom_files/onefilepercell_SRR11201752_and_others_DFMGU.loom')
-incisor <- Seurat::as.Seurat(x = tooth)
-incisor[["RNA"]]<-incisor[["spliced"]]
-incisor
 
+# Create the Seurat object from tooth
+incisor <- Seurat::as.Seurat(x = tooth)
+
+# In a first time we only consider spliced RNA because we look for  gene expression
+incisor[["RNA"]]<-incisor[["spliced"]]
+
+# Rename the percentag of mitochondrial RNA
 incisor[["percent.mt"]] <- Seurat::PercentageFeatureSet(incisor, pattern = "^mt-")
+
+# Visualize the distribution of the three parameters
 Seurat::VlnPlot(incisor, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
-  # FeatureScatter is typically used to visualize feature-feature relationships, but can be used
-  # for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
-  
+
+# Threshold of the parameters on arbitrary basis in order to select cells with enough counts and not too much mitochondrial RNA
+
+# First selection of the number of counts
+
+ncount <- incisor[["nCount_RNA"]]
+dim(ncount)
+ncount <- sort(ncount[["nCount_RNA"]])
+length(ncount)
+
+# Select the lowest 5 percent values of nCount
+low_born <- as.integer(5*length(ncount)/100)
+high_born <- as.integer(95*length(ncount)/100)
+ncount <- ncount[low_born:high_born]
+# Print the lenght to ensure that selection has been done
+length(ncount)
+
+# First selection of the number of different genes
+
+nfeature <- incisor[["nFeature_RNA"]]
+dim(nfeature)
+nfeature <- sort(nfeature[["nFeature_RNA"]])
+length(nfeature)
+
+# Select the lowest 5 percent values of nCount
+low_born <- as.integer(5*length(nfeature)/100)
+high_born <- as.integer(95*length(nfeature)/100)
+nfeature <- nfeature[low_born:high_born]
+
+length(nfeature)
+
+# Purification 
+incisor <- subset(incisor, subset = nCount_RNA %in% ncount & nFeature_RNA %in% nfeature & percent.mt < 15)
+Seurat::VlnPlot(incisor, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+# Display the number of cells that passed through the filter
+dim(incisor)
+# Plot the different parameters in function of each other to search for correlation
 plot1 <- Seurat::FeatureScatter(incisor, feature1 = "nCount_RNA", feature2 = "percent.mt")
 plot2 <- Seurat::FeatureScatter(incisor, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
 plot1 + plot2
-# Purification 
-incisor <- subset(incisor, subset = nFeature_RNA > 800 & nFeature_RNA < 7500 & percent.mt < 10)
+
 
 # Normalization step
 incisor<- Seurat::NormalizeData(incisor)
 
-incisor <- Seurat::FindVariableFeatures(incisor, selection.method = "vst", nfeatures = 2000)
+# Set the threshold on variability at 10 percents.
+variable <- as.integer(0.1 * dim(incisor)[1])
+variable
+incisor <- Seurat::FindVariableFeatures(incisor, selection.method = "vst", nfeatures = variable)
 
 # Identify the 10 most highly variable genes
 top10 <- head(Seurat::VariableFeatures(incisor), 10)
 
 # plot variable features with and without labels
-plot1 <- Seurat::VariableFeaturePlot(incisor)
-plot2 <- Seurat::LabelPoints(plot = plot1, points = top10, repel = TRUE)
-plot1 + plot2
+
+Seurat::LabelPoints(plot = plot1, points = top10, repel = TRUE)
+
 
 
 # Scaling the data
@@ -49,38 +92,63 @@ incisor <- Seurat::ScaleData(incisor, features = all.genes)
 
 
 # Linear dimensional reduction
+
+# First: PCA
 incisor <- Seurat::RunPCA(incisor, features = Seurat::VariableFeatures(object = incisor))
+
+# Print the five main components of the five main axis
 print(incisor[["pca"]], dims = 1:5, nfeatures = 5)
+
+# Display the genes involved in the first two axis
 Seurat::VizDimLoadings(incisor, dims = 1:2, reduction = "pca")
+
+# Display a two dimensions plot of the data with the two first PCA components as axis
 Seurat::DimPlot(incisor, reduction = "pca")                       
-incisor
 
+
+
+# Attempts to determine the optimal dimension of the PCA
+
+# First method: print heatmap on each axis to have a glance at the variability 
+# Here only the first and last axis are displayed as a comparison.
 Seurat::DimHeatmap(incisor, dims = 1, cells = 500, balanced = TRUE)
+Seurat::DimHeatmap(incisor, dims = 20, cells = 500, balanced = TRUE)
 
-# Dimensionality of the database, PCA is run on subset to construct a null distribution of scores
 
+# Second method: Jackstraw 
 
+# This first line create the null hypothese plot in dashed line
 incisor <- Seurat::JackStraw(incisor, num.replicate = 100)
+# Display the 20 axis
 incisor <- Seurat::ScoreJackStraw(incisor, dims = 1:20)
-# Plot
+
+
+# Third method: Elbowplot
+
 Seurat::JackStrawPlot(incisor, dims = 1:20)
 Seurat::ElbowPlot(incisor)
 
 
 # First attempts at clustering
+
+# As the clustering algorithm is similar to the Louvain algorithm for graphs,
+# the first step is the compute the detection of Neighbors for each cell. The data
+# are embedded in the 20 dimensions space previously defined.
 incisor <- Seurat::FindNeighbors(incisor, dims = 1:20)
 incisor <- Seurat::FindClusters(incisor, resolution = 0.5)
-head(Seurat::Idents(incisor), 5)
+
+# Display the clusters on the PCA plot 
 Seurat::DimPlot(incisor, reduction = "pca")
 
+# Visualization t-SNE
+
+incisor <- Seurat::RunTSNE(incisor, dims =1:20)
+Seurat::DimPlot(incisor, reduction = "tsne")
 
 # Visualization UMAP
-incisor <- Seurat::RunTSNE(incisor, dims =1:20)
-Seurat::DimPlot(incisor, reduction = "umap")
 
-# Visualization t-SNE
-incisor <- Seurat::RunUMAP(incisor, dims =1:20)
-Seurat::DimPlot(incisor, reduction = "tsne")
+incisor <- Seurat::RunUMAP(incisor, dims =1:20,n.neighbors = 10)
+Seurat::DimPlot(incisor, reduction = "umap")
 
 # Differentially expressed features
 
