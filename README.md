@@ -70,12 +70,21 @@ The first option is to make heatmaps of
 As it will be discussed in the part about clustering, PCA presents some weakness in terms of display (the clusters tend to overlap and for the machine it is not an issue but it make the figure looks strange). To overcome this issue, non-linear dimension reduction methods are particularly relevant.
 ### Clustering
 
-The clustering method aims to group cells by types in function of the 
+The clustering method aims to group cells by types in function of their RNA expression. The expected results 
 ### Annotation of the clusters
 
-## Toward RNA velocity 1: Alignement on the whole genome
+## Toward RNA velocity 1: Functionment of the method and alignement on the whole genome
+The aim of the RNA velocity analysis is to add a time dimension to the RNA seq study. It works by comparing the ration of spliced and unspliced RNA as illustrated in the figure bellow. Then, the ratio are analysed with regard to a simplist model of transcription and traduction dynamics. This very basic model suggests that there should proportionally be more unspliced RNA than spliced when the gene start being expressed. Conversly when the gene is no more expressed the ratio should be positive for spliced RNA. (See figure below from La Manno, G., Soldatov, R., Zeisel, A. et al. RNA velocity of single cells. Nature 560, 494–498 (2018). https://doi.org/10.1038/s41586-018-0414-6)
+
+![Data after purification](RNA_velocity.PNG)
+
+
+The spliced counts are detected if they carry sequences that are not continuous in the genome. For this reason, an alignment on the whole genome with anotations on intronic and exonic sequences is need. To this purpose, the library [STAR](https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/03_alignment.html) was used. As for salmon STAR require an index. Here the selected reference genome was ( ftp://ftp.ensembl.org/pub/release-101/fasta/mus_musculus/dna/Mus_musculus.GRCm38.dna.primary_assembly.fa.gz) and the anotations were (ftp://ftp.ensembl.org/pub/release-101/gtf/mus_musculus/Mus_musculus.GRCm38.101.gtf.gz).
+
 
 ## Toward RNA velocity 2: Sorting the counts and creating the loom file
+
+Due to the shape of the dataset (too many different cells in different files), the sorting method implemented inside of STAR was not usable. Thus the **samtool** sorting method was used with the script `samtoolsort.sh`. This step is mandatory for creating the loomfile the will be used for the final step of the analysis. The loomfile is a format distinguishing spliced, unspliced and ambiguous counts.
 
 ## Toward RNA velocity 3: Vizualizing velocity and identifying genes prone to explain it
 
