@@ -5,7 +5,7 @@
 Human dental tissue can't regenarate and this statement has forced human to use artificial implants. However, those implants are not always tolerated by human body and there are numbers of associated pathologies. One different approach to this issue is the study of rodent dental epithelium. Due to they way of living, rodents' incisive don't stop growing during there life. This implicates that some stem cell niches remain active during their whole life. Following the framework of the paper from Krikanez et al. we reanalyzed a dataset of single cell RNA seq extracted from mouse dental gyrus. The aim of this work was to identificate the different cellular population using differential expression and to associate each population to the corresponding cellular type by studying genetic markers. Then the final objective was to approach the temporal dynamic of the different cell type with the method of RNA velocity.
 
 ## Getting the data
-The data were collected on NCBI (https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE146123). The dataset used in this work was obtained by selecting an homogeneous subset of the original study i.e. : Mus musculus, healthy, incisor, smart seq2. The corresponding subset included 2555 cells.
+The data were collected on [NCBI](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE146123). The dataset used in this work was obtained by selecting an homogeneous subset of the original study i.e. : Mus musculus, healthy, incisor, smart seq2. The corresponding subset included 2555 cells.
 
 The accession numbers of the cells that fullfil all the criteria were sum up in an SSR accession number list and the script `fastqdump.sh` permitted to get the files with **fastq-dump**.
 
@@ -39,7 +39,7 @@ Then, the Java package **salmon** xas run on all the cells with `alignment.sh`
 
 ## Analysis of the data with Seurat
 
-The R package Seurat permits to conduct statistical analysis on single cell data and more information about the code are in the R script `Seurat_treatment.R` . 
+The R package Seurat permits to conduct statistical analysis on single cell data and more information about the code are in the R script `Seurat_treatment.R`. The analysis follows the guideline of the [Seurat tutorial](https://satijalab.org/seurat/v3.2/pbmc3k_tutorial.html). 
 
 ### Purification on gene counts
 
@@ -62,6 +62,7 @@ As the following analysis aim to detect different cell type it is important to s
 ![Data after purification](Variability_threshold.png)
 
 ### Dimensional reduction
+
 After the previous purification steps the dataset was still high dimension (5548 genes on 1962 cells) and then non usable for clustering algorithms. For this reason a PCA method was run on the data using Seurat. 
 
 The principle of the PCA is to aggregate dimension that explain the biggest parts of the variance. Then, the issue is to determine how many dimension would have the reducted subspace. If the chosen dimension is too low there will be information loss and on the contrary if its too high the benefits of the operation would be null. In order to determine the right number of dimensions, three methods can be used to estimate the importance of each reducted dimension.
@@ -79,7 +80,8 @@ The aim of the RNA velocity analysis is to add a time dimension to the RNA seq s
 ![Data after purification](RNA_velocity.PNG)
 
 
-The spliced counts are detected if they carry sequences that are not continuous in the genome. For this reason, an alignment on the whole genome with anotations on intronic and exonic sequences is need. To this purpose, the library [STAR](https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/03_alignment.html) was used. As for salmon STAR require an index. Here the selected reference genome was ( ftp://ftp.ensembl.org/pub/release-101/fasta/mus_musculus/dna/Mus_musculus.GRCm38.dna.primary_assembly.fa.gz) and the anotations were (ftp://ftp.ensembl.org/pub/release-101/gtf/mus_musculus/Mus_musculus.GRCm38.101.gtf.gz).
+The spliced counts are detected if they carry sequences that are not continuous in the genome. For this reason, an alignment on the whole genome with anotations on intronic and exonic sequences is need. To this purpose, the library [STAR](https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/03_alignment.html) was used. As for salmon STAR require an index. Here the selected reference genome can be downloaded at ( ftp://ftp.ensembl.org/pub/release-101/fasta/mus_musculus/dna/Mus_musculus.GRCm38.dna.primary_assembly.fa.gz) and the anotations can be found at (ftp://ftp.ensembl.org/pub/release-101/gtf/mus_musculus/Mus_musculus.GRCm38.101.gtf.gz).
+The index was built with those two files and the script `STAR_index.sh`. Afterward, the script `run_STAR.sh` was executed on the purified data. 
 
 
 ## Toward RNA velocity 2: Sorting the counts and creating the loom file
@@ -87,6 +89,10 @@ The spliced counts are detected if they carry sequences that are not continuous 
 Due to the shape of the dataset (too many different cells in different files), the sorting method implemented inside of STAR was not usable. Thus the **samtool** sorting method was used with the script `samtoolsort.sh`. This step is mandatory for creating the loomfile the will be used for the final step of the analysis. The loomfile is a format distinguishing spliced, unspliced and ambiguous counts.
 
 ## Toward RNA velocity 3: Vizualizing velocity and identifying genes prone to explain it
+
+The codes are available at the end of the R script `Seurat_treatment.R`. The first one was inspired by the **Velocito.R** [tutorial](http://pklab.med.harvard.edu/velocyto/notebooks/R/DG1.nb.html). The second one was given by the work supervisors. 
+
+
 
 ## Conclusion
 
