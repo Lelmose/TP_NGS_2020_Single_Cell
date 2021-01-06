@@ -75,7 +75,7 @@ The clustering method aims to group cells by types in function of their RNA expr
 ### Annotation of the clusters
 
 ## Toward RNA velocity 1: Functionment of the method and alignement on the whole genome
-The aim of the RNA velocity analysis is to add a time dimension to the RNA seq study. It works by comparing the ration of spliced and unspliced RNA as illustrated in the figure bellow. Then, the ratio are analysed with regard to a simplist model of transcription and traduction dynamics. This very basic model suggests that there should proportionally be more unspliced RNA than spliced when the gene start being expressed. Conversly when the gene is no more expressed the ratio should be positive for spliced RNA. (See figure below from La Manno, G., Soldatov, R., Zeisel, A. et al. RNA velocity of single cells. Nature 560, 494–498 (2018). https://doi.org/10.1038/s41586-018-0414-6)
+The aim of the RNA velocity analysis is to add a time dimension to the RNA seq study. It works by comparing the ration of spliced and unspliced RNA as illustrated in the figure bellow. Then, the ratio are analysed with regard to a simplist model of transcription and traduction dynamics. This very basic model suggests that there should proportionally be more unspliced RNA than spliced when the gene start being expressed. Conversly when the gene is no more expressed the ratio should be positive for spliced RNA. (See figure below from [La Manno, G., Soldatov, R., Zeisel, A. et al. RNA velocity of single cells. Nature 560, 494–498 (2018)]( https://doi.org/10.1038/s41586-018-0414-6)).
 
 ![Data after purification](RNA_velocity.PNG)
 
