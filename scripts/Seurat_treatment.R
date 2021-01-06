@@ -171,15 +171,40 @@ head(cluster1.markers, n = 5)
 VlnPlot(incisor, features = c("Selenop", "Ctsc"))
 
 Seurat::FeaturePlot(incisor, features = c("Spry4"))
-# On nomme les cluster en fonction des types qu'on a inférés
+
+
+# Name the cluster in function of the observations
 new.cluster.ids <- c("Macrophages 1","Distal Pulp", "Distal Pulp", "Endothelium","Dental Epithelium","Macrophages 2",
                      "Preodontoblasts", "Dental follicle","Innate Lymphocytes","Leukocytes","Oseoblasts","Glia","Perivascular")
 names(new.cluster.ids) <- levels(incisor)
 incisor <- RenameIdents(incisor, new.cluster.ids)
 DimPlot(incisor, reduction = "umap", label = TRUE, pt.size = 0.5) + NoLegend()
 
-                     
-# Velocity estimation
+
+test_incisor<-incisor
+dental_pulp = c("Macrophages 1","Apical Pulp", "Distal Pulp", "Endothelium","Dental Epithelium","Dental follicle")
+test_incisor <- subset(test_incisor, subset = seurat_clusters %in% dental_pulp)
+Seurat::DimPlot(test_incisor, reduction = "umap")
+test_incisor <- RunVelocity(object = test_incisor, deltaT = 1, kCells = 25, fit.quantile = 0.02, ncores = 3, reduction = "pca")
+test_t <- Tool(object = test_incisor, slot = "RunVelocity")
+ident.colors <- (scales::hue_pal())(n = length(x = levels(x = test_incisor)))
+names(x = ident.colors) <- levels(x = incisor)
+cell.colors <- ident.colors[Idents(object = test_incisor)]
+names(x = cell.colors) <- colnames(x = test_incisor)
+show.velocity.on.embedding.cor(emb = Embeddings(object = test_incisor, reduction = "umap"), vel = Tool(object = test_incisor, 
+                                                                                                  slot = "RunVelocity"), n = 200, scale = "sqrt", cell.colors = ac(x = cell.colors, alpha = 0.5), 
+                               cex = 0.8, arrow.scale = 3, show.grid.flow = TRUE, min.grid.cell.mass = 0.5, grid.n = 40, arrow.lwd = 1, 
+                               do.par = FALSE, cell.border.alpha = 0.1)
+
+
+
+
+
+
+################ Velocity estimation  ################
+
+
+# First attempt
 
 emat <- tooth$spliced
 nmat <- tooth$unspliced
@@ -199,7 +224,8 @@ cell.colors <- ident.colors[Idents(object = incisor)]
 show.velocity.on.embedding.cor(emb,rvel.cd,n=300,scale='sqrt',cex=0.8,arrow.scale=5,show.grid.flow=TRUE,min.grid.cell.mass=0.5,grid.n=40,arrow.lwd=1,do.par=F,cell.border.alpha = 0.1)
 cell.colors
 
-# Nouvelle tentative
+# New attempt with given code from Marie and Romain
+
 incisor <- RunVelocity(object = incisor, deltaT = 1, kCells = 25, fit.quantile = 0.02, ncores = 3, reduction = "pca")
 t <- Tool(object = incisor, slot = "RunVelocity")
 ident.colors <- (scales::hue_pal())(n = length(x = levels(x = incisor)))
@@ -212,22 +238,7 @@ show.velocity.on.embedding.cor(emb = Embeddings(object = incisor, reduction = "u
                                do.par = FALSE, cell.border.alpha = 0.1)
 
 
-test_incisor<-incisor
-dental_pulp = c("Macrophages 1","Apical Pulp", "Distal Pulp", "Endothelium","Dental Epithelium","Dental follicle")
-test_incisor <- subset(test_incisor, subset = seurat_clusters %in% dental_pulp)
-Seurat::DimPlot(test_incisor, reduction = "umap")
-test_incisor <- RunVelocity(object = test_incisor, deltaT = 1, kCells = 25, fit.quantile = 0.02, ncores = 3, reduction = "pca")
-test_t <- Tool(object = test_incisor, slot = "RunVelocity")
-ident.colors <- (scales::hue_pal())(n = length(x = levels(x = test_incisor)))
-names(x = ident.colors) <- levels(x = incisor)
-cell.colors <- ident.colors[Idents(object = test_incisor)]
-names(x = cell.colors) <- colnames(x = test_incisor)
-show.velocity.on.embedding.cor(emb = Embeddings(object = test_incisor, reduction = "umap"), vel = Tool(object = test_incisor, 
-                                                                                                  slot = "RunVelocity"), n = 200, scale = "sqrt", cell.colors = ac(x = cell.colors, alpha = 0.5), 
-                               cex = 0.8, arrow.scale = 3, show.grid.flow = TRUE, min.grid.cell.mass = 0.5, grid.n = 40, arrow.lwd = 1, 
-                               do.par = FALSE, cell.border.alpha = 0.1)
-
-# Tentative pour isoler les gènes qui sont à l'origine de la vélocité
+#Brief attempts to search for genes of importance in RNA velocity
 
 velo <- test_incisor@tools$RunVelocity$gamma
 velo <- sort(velo, decreasing = TRUE)

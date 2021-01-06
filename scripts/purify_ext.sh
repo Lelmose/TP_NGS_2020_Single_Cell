@@ -3,7 +3,7 @@
 data="/ifb/data/mydatalocal"
 mkdir -p $data
 cd $data
-# Quick script to clean extensions 
+# Quick script to clean extensions that accumulted during treatment 
 mkdir -p STAR_data_sorted
 cd STAR_data_sorted
 
