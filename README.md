@@ -68,11 +68,23 @@ After the previous purification steps the dataset was still high dimension (5548
 
 The principle of the PCA is to aggregate dimension that explain the biggest parts of the variance. Then, the issue is to determine how many dimension would have the reducted subspace. If the chosen dimension is too low there will be information loss and on the contrary if its too high the benefits of the operation would be null. In order to determine the right number of dimensions, three methods can be used to estimate the importance of each reducted dimension.
 
-The first option is to make heatmaps of the variation of genes on the interest principal component. As illustrated [bellow](PC1) the first component's heatmap exhibits clear correlations whereas the 20th does not.
+The first option is to make heatmaps of the variation of genes on the interest principal component. As illustrated bellow the first component's heatmap exhibits clear correlations whereas the 20th does not.
 
-![PC1](pc1_heatmap.png)
+![PC1](Pictures/pc1_heatmap.png)
 
-![PC20](pc20_heatmap.png)
+![PC20](Pictures/pc20_heatmap.png)
+
+But their is a grey zone between 10th and 20th components so it is hard to chose which one is no more interesting.
+
+The second method is to plot the cumulated explained variance across the principal commponents in an Elbowplot:
+
+![Elbowplot](Pictures/Elbowplot.png)
+
+Once again, it is not clear when the compenent are no more relevant to consider. 
+The third and last option is to consider the null hypothesis of repartition of the data and to plot the principal component against this hypothesis. (Dashed line in the figure below):
+
+![Rainbowplot](Pictures/JAckstrawplot.png)
+
 As it will be discussed in the part about clustering, PCA presents some weakness in terms of display (the clusters tend to overlap and for the machine it is not an issue but it make the figure looks strange). To overcome this issue, non-linear dimension reduction methods are particularly relevant.
 ### Clustering
 
