@@ -40,6 +40,7 @@ Then, the Java package **salmon** xas run on all the cells with `alignment.sh`
 ## Analysis of the data with Seurat
 
 The R package Seurat permits to conduct statistical analysis on single cell data and more information about the code are in the R script `Seurat_treatment.R`. The analysis follows the guideline of the [Seurat tutorial](https://satijalab.org/seurat/v3.2/pbmc3k_tutorial.html). 
+In this work the data used have been produced by STAR alignement which is described bellow and in this part only the spliced RNA were considered. To see the results with **salmon** please see Guillaume work [here](https://github.com/guiseuzaret/tp_ngs_single_cell)
 
 ### Purification on gene counts
 
