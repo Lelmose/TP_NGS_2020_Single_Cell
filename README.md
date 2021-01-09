@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Human dental tissue can't regenarate and this statement has forced human to use artificial implants. However, those implants are not always tolerated by human body and there are numbers of associated pathologies. One different approach to this issue is the study of rodent dental epithelium. Due to they way of living, rodents' incisive don't stop growing during there life. This implicates that some stem cell niches remain active during their whole life. Following the framework of the paper from Krikanez et al. we reanalyzed a dataset of single cell RNA seq extracted from mouse dental gyrus. The aim of this work was to identificate the different cellular population using differential expression and to associate each population to the corresponding cellular type by studying genetic markers. Then the final objective was to approach the temporal dynamic of the different cell type with the method of RNA velocity.
+Human dental tissue can't regenarate and this statement has forced human to use artificial implants. However, those implants are not always tolerated by human body and there are numbers of associated pathologies. One different approach to this issue is the study of rodent dental epithelium. Due to they way of living, rodents' incisive don't stop growing during there life. This implicates that some stem cell niches remain active during their whole life. Following the framework of the paper from [Krikanez et al.](https://www.nature.com/articles/s41467-020-18512-7) we reanalyzed a dataset of single cell RNA seq extracted from mouse dental gyrus. The aim of this work was to identificate the different cellular population using differential expression and to associate each population to the corresponding cellular type by studying genetic markers. Then the final objective was to approach the temporal dynamic of the different cell type with the method of RNA velocity.
 
 ## Getting the data
 The data were collected on [NCBI](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE146123). The dataset used in this work was obtained by selecting an homogeneous subset of the original study i.e. : Mus musculus, healthy, incisor, smart seq2. The corresponding subset included 2555 cells.
@@ -58,9 +58,9 @@ With the precise number of counts per genes a more precise purification can be r
 
 ### Estimating variance of the Dataset and rescaling the data
 
-As the following analysis aim to detect different cell type it is important to select genes that exhibit variability in their expression. Based on the Fig, the 5% more expressed genes were selected. This step is important because it the first dimensional reduction of our data and it will prevent some bias for the next dimensional reductions. A lot of poorly variable genes will have a deleterious impact on the PCA because it will increase sparsity and introduice correlated variables that are not consistent with the goal of this work.
+As the following analysis aim to detect different cell type it is important to select genes that exhibit variability in their expression. Based on the Fig, the 5% more expressed genes were selected. This step is important because it the first dimensional reduction of our data and it will prevent some bias for the next dimensional reductions. A lot of poorly variable genes will have a deleterious impact on the PCA because it will increase sparsity and introduce correlated variables that are not consistent with the goal of this work.
 
-![Data after purification](Variability_threshold.png)
+![Data after purification](Pictures/Variability_threshold.png)
 
 ### Dimensional reduction
 
@@ -85,10 +85,12 @@ The third and last option is to consider the null hypothesis of repartition of t
 
 ![Rainbowplot](Pictures/JAckstrawplot.png)
 
-As it will be discussed in the part about clustering, PCA presents some weakness in terms of display (the clusters tend to overlap and for the machine it is not an issue but it make the figure looks strange). To overcome this issue, non-linear dimension reduction methods are particularly relevant.
+This three approaches gives an illustration of how tough the choice of the number of relevant components can be. However, it is important to remember that this question has no answer and depends on the objectives of the study. Considering more components is prone to increase the computational cost and sometimes the benefits are tiny in comparison.
+
+As it will be discussed in the part about clustering, PCA presents some weakness in terms of display (the clusters tend to overlap and for the machine it is not an issue but it make the figure looks strange). To overcome this issue, non-linear dimension reduction methods are particularly relevant. The two most common no-linear dimension reduction methods are implemented in **Seurat**. The following figure illustrate the influence of the 
 ### Clustering
 
-The clustering method aims to group cells by types in function of their RNA expression. The expected results 
+The clustering method aims to group cells by types in function of their RNA expression. The expected results where obtained by comparing the result of 
 ### Annotation of the clusters
 
 ## Toward RNA velocity 1: Functionment of the method and alignement on the whole genome
