@@ -98,13 +98,16 @@ With perplexity=10 the representation is sparse with a wide diversity of cluster
 
 ### Clustering
 
-The clustering method aims to group cells by types in function of their RNA expression. Here the method used is derived from Louvain modularity maximization. First the neighborhood of each cell was compute then the clustering method was run The expected results where obtained by comparing the result of 
-### Annotation of the clusters
+The clustering method aims to group cells by types in function of their RNA expression. Here the method used is derived from Louvain modularity maximization. First the neighborhood of each cell was computed then, the clustering method was run on it. 
 
+### Annotation of the clusters
+The expected results where obtained by comparing the result of 
+
+![Umap_annoted](Pictures/UMAP annoted.png)
 ## Toward RNA velocity 1: Functionment of the method and alignement on the whole genome
 The aim of the RNA velocity analysis is to add a time dimension to the RNA seq study. It works by comparing the ration of spliced and unspliced RNA as illustrated in the figure bellow. Then, the ratio are analysed with regard to a simplist model of transcription and traduction dynamics. This very basic model suggests that there should proportionally be more unspliced RNA than spliced when the gene start being expressed. Conversly when the gene is no more expressed the ratio should be positive for spliced RNA. (See figure below from [La Manno, G., Soldatov, R., Zeisel, A. et al. RNA velocity of single cells. Nature 560, 494–498 (2018)]( https://doi.org/10.1038/s41586-018-0414-6)).
 
-![Data after purification](RNA_velocity.PNG)
+![Data after purification](Pictures/RNA_velocity.PNG)
 
 
 The spliced counts are detected if they carry sequences that are not continuous in the genome. For this reason, an alignment on the whole genome with anotations on intronic and exonic sequences is need. To this purpose, the library [STAR](https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/03_alignment.html) was used. As for salmon STAR require an index. Here the selected reference genome can be downloaded at ( ftp://ftp.ensembl.org/pub/release-101/fasta/mus_musculus/dna/Mus_musculus.GRCm38.dna.primary_assembly.fa.gz) and the anotations can be found at (ftp://ftp.ensembl.org/pub/release-101/gtf/mus_musculus/Mus_musculus.GRCm38.101.gtf.gz).
@@ -115,12 +118,11 @@ The index was built with those two files and the script `STAR_index.sh`. Afterwa
 
 Due to the shape of the dataset (too many different cells in different files), the sorting method implemented inside of STAR was not usable. Thus the **samtool** sorting method was used with the script `samtoolsort.sh`. This step is mandatory for creating the loomfile the will be used for the final step of the analysis. The loomfile is a format distinguishing spliced, unspliced and ambiguous counts.
 
+![qmap](Pictures/qmap.PNG)
+
 ## Toward RNA velocity 3: Vizualizing velocity and identifying genes prone to explain it
 
 The codes are available at the end of the R script `Seurat_treatment.R`. The first one was inspired by the **Velocito.R** [tutorial](http://pklab.med.harvard.edu/velocyto/notebooks/R/DG1.nb.html). The second one was given by the work supervisors. 
 
-
-
-## Conclusion
-
+![Data after purification](Pictures/RNA_velocity.PNG)
 
