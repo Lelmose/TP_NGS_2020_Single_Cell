@@ -87,10 +87,18 @@ The third and last option is to consider the null hypothesis of repartition of t
 
 This three approaches gives an illustration of how tough the choice of the number of relevant components can be. However, it is important to remember that this question has no answer and depends on the objectives of the study. Considering more components is prone to increase the computational cost and sometimes the benefits are tiny in comparison.
 
-As it will be discussed in the part about clustering, PCA presents some weakness in terms of display (the clusters tend to overlap and for the machine it is not an issue but it make the figure looks strange). To overcome this issue, non-linear dimension reduction methods are particularly relevant. The two most common no-linear dimension reduction methods are implemented in **Seurat**. The following figure illustrate the influence of the 
+As it will be discussed in the part about clustering, PCA presents some weakness in terms of display (the clusters tend to overlap and for the machine it is not an issue but it make the figure looks strange). To overcome this issue, non-linear dimension reduction methods are particularly relevant. The two most common no-linear dimension reduction methods are implemented in **Seurat**. The following figure illustrate the influence of the main **Umap** parameter: perplexity. This parameter control the trade-off between conservation of data's local organization and global structure of the dataset. 
+Because of the computational cost both  **umap** and **t-sne** were run on the first 20 PC obtained just before.
+
+![Umap10](Pictures/Umap_n10.png)
+![Umap20](Pictures/Umap_n20.png)
+![Umap30](Pictures/Umap_n30.png)
+
+With perplexity=10 the representation is sparse with a wide diversity of clusters and with perpelexity>30 some clusters are merged whereas the identified cell types are different (see **clustering** and **annotation** parts).
+
 ### Clustering
 
-The clustering method aims to group cells by types in function of their RNA expression. The expected results where obtained by comparing the result of 
+The clustering method aims to group cells by types in function of their RNA expression. Here the method used is derived from Louvain modularity maximization. First the neighborhood of each cell was compute then the clustering method was run The expected results where obtained by comparing the result of 
 ### Annotation of the clusters
 
 ## Toward RNA velocity 1: Functionment of the method and alignement on the whole genome
