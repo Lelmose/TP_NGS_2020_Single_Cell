@@ -104,15 +104,14 @@ The clustering method aims to group cells by types in function of their RNA expr
 The expected results where obtained by comparing the result of 
 
 ![Umap_annoted](Pictures/UMAP annoted.png)
+
 ## Toward RNA velocity 1: Functionment of the method and alignement on the whole genome
 The aim of the RNA velocity analysis is to add a time dimension to the RNA seq study. It works by comparing the ration of spliced and unspliced RNA as illustrated in the figure bellow. Then, the ratio are analysed with regard to a simplist model of transcription and traduction dynamics. This very basic model suggests that there should proportionally be more unspliced RNA than spliced when the gene start being expressed. Conversly when the gene is no more expressed the ratio should be positive for spliced RNA. (See figure below from [La Manno, G., Soldatov, R., Zeisel, A. et al. RNA velocity of single cells. Nature 560, 494–498 (2018)]( https://doi.org/10.1038/s41586-018-0414-6)).
 
 ![Data after purification](Pictures/RNA_velocity.PNG)
 
-
 The spliced counts are detected if they carry sequences that are not continuous in the genome. For this reason, an alignment on the whole genome with anotations on intronic and exonic sequences is need. To this purpose, the library [STAR](https://hbctraining.github.io/Intro-to-rnaseq-hpc-O2/lessons/03_alignment.html) was used. As for salmon STAR require an index. Here the selected reference genome can be downloaded at ( ftp://ftp.ensembl.org/pub/release-101/fasta/mus_musculus/dna/Mus_musculus.GRCm38.dna.primary_assembly.fa.gz) and the anotations can be found at (ftp://ftp.ensembl.org/pub/release-101/gtf/mus_musculus/Mus_musculus.GRCm38.101.gtf.gz).
 The index was built with those two files and the script `STAR_index.sh`. Afterward, the script `run_STAR.sh` was executed on the purified data. 
-
 
 ## Toward RNA velocity 2: Sorting the counts and creating the loom file
 
@@ -122,7 +121,18 @@ Due to the shape of the dataset (too many different cells in different files), t
 
 ## Toward RNA velocity 3: Vizualizing velocity and identifying genes prone to explain it
 
-The codes are available at the end of the R script `Seurat_treatment.R`. The first one was inspired by the **Velocito.R** [tutorial](http://pklab.med.harvard.edu/velocyto/notebooks/R/DG1.nb.html). The second one was given by the work supervisors. 
+The codes are available at the end of the R script `Seurat_treatment.R`. The first one was inspired by the **Velocito.R** [tutorial](http://pklab.med.harvard.edu/velocyto/notebooks/R/DG1.nb.html) using **seurat** instead of **PAGODA2**. The second one was given by the supervisors. 
+The figure below gives an overview of the different trends acress the cell types. 
+Two observations can be done; first the cells from the dental mesenchyme seem to originate from the apical pulp. Secondly, the immune cell exhibit a clear velocity gradient that can be caused by late differenciation of lymphocytes.
 
-![Data after purification](Pictures/RNA_velocity.PNG)
+![Velocity](Pictures/Velocyti.png)
+
+Top influence genes were plotted to search for differenciation candidates but nothing conclusive was obtained. Multiple reasons can be proposed to explain this.
+Among them:
+
+* The depth of the sequencing method used, at this time no method allow to cumulate both important depth and numerous cells.
+* Lack of purification in the dataset; some genes associated with specific cellular functions such as cellular cycle or metabolism could have been studied apart from the other genes. 
+
+![Slc25a2](Pictures/Slc25a21.png)
+![Rbfox1](Pictures/Rbfox1.png)
 
